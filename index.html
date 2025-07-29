@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherPro - Professional Weather App</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Background Animation Container -->
+        <div class="background-animation" id="backgroundAnimation"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <i class="fas fa-cloud-sun"></i>
+                    WeatherPro
+                </h1>
+                <div class="header-controls">
+                    <button class="control-btn" id="unitToggle" title="Toggle Temperature Unit">
+                        <span class="unit-display">°C</span>
+                    </button>
+                    <button class="control-btn" id="themeToggle" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <form class="search-form" id="searchForm">
+                    <div class="search-input-container">
+                        <input type="text" id="cityInput" placeholder="Enter city name (e.g., Mumbai, Delhi, London)..." class="search-input">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <button class="location-btn" id="locationBtn" title="Use Current Location">
+                    <i class="fas fa-location-arrow"></i>
+                    <span>Current Location</span>
+                </button>
+            </div>
+            
+            <!-- Favorites -->
+            <div class="favorites-section" id="favoritesSection">
+                <h3 class="favorites-title">Favorite Cities 
+                    <small style="font-weight: normal; color: var(--color-text-secondary); font-size: var(--font-size-sm);">
+                        (Try: Mumbai, Delhi, Bangalore, Chennai, Kolkata)
+                    </small>
+                </h3>
+                <div class="favorites-list" id="favoritesList"></div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Loading State -->
+            <div class="loading" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Fetching weather data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Oops! Something went wrong</h3>
+                <p id="errorMessage">Unable to fetch weather data. Please try again.</p>
+                <button class="retry-btn" id="retryBtn">Try Again</button>
+            </div>
+
+            <!-- Weather Content -->
+            <div class="weather-content" id="weatherContent">
+                <!-- Current Weather -->
+                <section class="current-weather">
+                    <div class="current-header">
+                        <div class="location-info">
+                            <h2 class="city-name" id="cityName">City Name</h2>
+                            <p class="date-time" id="dateTime">Loading...</p>
+                        </div>
+                        <button class="favorite-btn" id="favoriteBtn" title="Add to Favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="weather-main">
+                        <div class="temperature-section">
+                            <div class="current-temp" id="currentTemp">--°</div>
+                            <div class="weather-icon" id="weatherIcon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-description">
+                            <p class="condition" id="weatherCondition">Loading...</p>
+                            <p class="feels-like">Feels like <span id="feelsLike">--°</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Weather Details Grid -->
+                    <div class="weather-details">
+                        <div class="detail-card">
+                            <i class="fas fa-eye"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Visibility</span>
+                                <span class="detail-value" id="visibility">-- km</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <i class="fas fa-tint"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Humidity</span>
+                                <span class="detail-value" id="humidity">--%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <i class="fas fa-wind"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Wind Speed</span>
+                                <span class="detail-value" id="windSpeed">-- km/h</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <i class="fas fa-thermometer-half"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Pressure</span>
+                                <span class="detail-value" id="pressure">-- hPa</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <i class="fas fa-sun"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">UV Index</span>
+                                <span class="detail-value uv-index" id="uvIndex">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Hourly Forecast -->
+                <section class="hourly-forecast">
+                    <h3 class="section-title">24-Hour Forecast</h3>
+                    <div class="hourly-container" id="hourlyContainer">
+                        <div class="hourly-scroll" id="hourlyScroll">
+                            <!-- Hourly forecast cards will be inserted here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Map Section -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 WeatherPro. Powered by OpenWeatherMap API</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
