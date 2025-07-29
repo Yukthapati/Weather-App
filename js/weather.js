@@ -47,12 +47,6 @@ class WeatherApp {
         }
 
         // Location button
-        const locationBtn = document.getElementById('locationBtn');
-        if (locationBtn) {
-            locationBtn.addEventListener('click', () => this.getCurrentLocation());
-        }
-
-        // Unit toggle
         const unitToggle = document.getElementById('unitToggle');
         if (unitToggle) {
             unitToggle.addEventListener('click', () => this.toggleUnit());
@@ -245,25 +239,6 @@ class WeatherApp {
             
             this.displayWeatherData(demoData);
         }, 1000);
-    }
-
-    getCurrentLocation() {
-        if (navigator.geolocation) {
-            this.showLoading();
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    console.log('Location found:', position.coords);
-                    // Simulate getting weather for current location
-                    this.showDemoData();
-                },
-                (error) => {
-                    console.error('Location error:', error);
-                    this.showError('Unable to get your location. Please search for a city instead.');
-                }
-            );
-        } else {
-            this.showError('Geolocation is not supported by this browser.');
-        }
     }
 
     toggleUnit() {

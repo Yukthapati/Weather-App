@@ -168,7 +168,6 @@ body {
   display: flex;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
-  align-items: center;
 }
 
 .search-form {
@@ -216,27 +215,6 @@ body {
 
 .search-btn:hover {
   background: #2563EB;
-  transform: translateY(-1px);
-}
-
-.location-btn {
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: 2px solid var(--color-secondary);
-  border-radius: var(--radius-lg);
-  background: transparent;
-  color: var(--color-secondary);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--font-size-base);
-  white-space: nowrap;
-}
-
-.location-btn:hover {
-  background: var(--color-secondary);
-  color: white;
   transform: translateY(-1px);
 }
 
@@ -621,11 +599,6 @@ body {
   
   .search-form {
     width: 100%;
-  }
-  
-  .location-btn {
-    align-self: stretch;
-    justify-content: center;
   }
   
   .weather-main {
