@@ -8,14 +8,15 @@
   --color-error: #EF4444;
   
   /* Light Theme */
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F8FAFC;
-  --color-bg-tertiary: #F1F5F9;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-tertiary: #94A3B8;
-  --color-border: #E2E8F0;
-  --color-shadow: rgba(15, 23, 42, 0.1);
+--color-bg-primary: #FFFFFF;
+--color-bg-secondary: #F8FAFC;
+--color-bg-tertiary: #F1F5F9;
+--color-text-primary: #0F172A;
+--color-text-secondary: #475569;
+--color-text-tertiary: #94A3B8;
+--color-border: #E2E8F0;
+--color-shadow: rgba(15, 23, 42, 0.1);
+
   
   /* Spacing System (8px base) */
   --spacing-xs: 4px;
