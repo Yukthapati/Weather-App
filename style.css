@@ -607,31 +607,50 @@ body {
 .weekly-list {
   display: flex;
   gap: 1rem;
-  flex-wrap: nowrap;
-  min-width: 100%;
+  padding: 0 1rem;
 }
 
-.w.weekly-card i {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-primary); /* or use a brighter custom color */
+.weekly-card {
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  min-width: 120px;
+  text-align: center;
+  color: var(--color-text-primary);
+  box-shadow: 0 2px 6px var(--color-shadow);
+  flex-shrink: 0;
 }
-
 
 .weekly-day {
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.weekly-icon {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+  color: #fbbf24; /* sun-yellow for icons */
+}
+
+.weekly-description {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.25rem;
 }
 
 .weekly-temp {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1rem;
 }
 
-.weekly-card i {
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
-  color: var(--color-text-tertiary);
+.weekly-temp .high {
+  color: #facc15; /* warm yellow */
+  font-weight: 600;
+}
+
+.weekly-temp .low {
+  color: #60a5fa; /* cool blue */
+
 }
 
 /* Optional: style scrollbar */
