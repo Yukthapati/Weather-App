@@ -207,8 +207,8 @@ class WeatherApp {
     }
 
     showWeeklyForecast() {
-        const weeklyList = document.getElementById('weeklyList');
-        if (!weeklyList) return;
+        const weeklyContainer = document.getElementById('weeklyForecast');
+        if (!weeklyContainer) return;
 
         // Generate demo weekly data
         const days = [];
@@ -233,21 +233,22 @@ class WeatherApp {
         }
 
         // Create weekly forecast cards
-        weeklyList.innerHTML = days.map(day => `
-            <div class="weekly-card">
-                <div class="weekly-day">${day.day}</div>
-                <div class="weekly-weather">
+        const weeklyScroll = weeklyContainer.querySelector('.weekly-scroll');
+        if (weeklyScroll) {
+            weeklyScroll.innerHTML = days.map(day => `
+                <div class="weekly-card">
+                    <div class="weekly-day">${day.day}</div>
                     <div class="weekly-icon">
                         <i class="${day.icon}"></i>
                     </div>
                     <div class="weekly-condition">${day.condition}</div>
+                    <div class="weekly-temps">
+                        <span class="weekly-high">${day.high}°</span>
+                        <span class="weekly-low">${day.low}°</span>
+                    </div>
                 </div>
-                <div class="weekly-temps">
-                    <span class="weekly-high">${day.high}°</span>
-                    <span class="weekly-low">${day.low}°</span>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
     }
 
     showWeatherContent() {
