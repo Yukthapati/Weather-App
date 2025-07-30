@@ -10,17 +10,15 @@
   /* Light Theme */
 .light-theme {
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F8FAFC;
-  --color-bg-tertiary: #EDF1F5;
+  --color-bg-secondary: #F9FAFB;
+  --color-bg-tertiary: #FFFFFF;
 
   --color-text-primary: #1E293B;
   --color-text-secondary: #475569;
   --color-text-tertiary: #94A3B8;
 
-  --color-border: #D1D5DB;
-  --color-shadow: rgba(15, 23, 42, 0.08);
-}
-
+  --color-border: #E2E8F0;
+  --color-shadow: rgba(0, 0, 0, 0.08);
 }
 
 }
