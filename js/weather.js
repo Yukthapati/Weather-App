@@ -1,7 +1,7 @@
 // Weather API and UI management for WeatherPro
 class WeatherApp {
     constructor() {
-        this.API_KEY = 'demo'; // Replace with actual API key
+        this.API_KEY = 'demo';
         this.BASE_URL = 'https://api.openweathermap.org/data/2.5';
         this.storage = new StorageManager();
         this.animations = new AnimationManager();
