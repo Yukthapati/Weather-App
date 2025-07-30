@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
     <div class="app-container">
         <!-- Background Animation Container -->
         <div class="background-animation" id="backgroundAnimation"></div>
-        
+
         <!-- Header -->
         <header class="header">
             <div class="header-content">
@@ -44,10 +44,10 @@
                     </div>
                 </form>
             </div>
-            
+
             <!-- Favorites -->
             <div class="favorites-section" id="favoritesSection">
-                <h3 class="favorites-title">Favorite Cities 
+                <h3 class="favorites-title">Favorite Cities
                     <small style="font-weight: normal; color: var(--color-text-secondary); font-size: var(--font-size-sm);">
                         (Try: Mumbai, Delhi, Bangalore, Chennai, Kolkata)
                     </small>
@@ -58,13 +58,11 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Loading State -->
             <div class="loading" id="loadingState">
                 <div class="loading-spinner"></div>
                 <p>Fetching weather data...</p>
             </div>
 
-            <!-- Error State -->
             <div class="error-state" id="errorState">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h3>Oops! Something went wrong</h3>
@@ -72,9 +70,7 @@
                 <button class="retry-btn" id="retryBtn">Try Again</button>
             </div>
 
-            <!-- Weather Content -->
             <div class="weather-content" id="weatherContent">
-                <!-- Current Weather -->
                 <section class="current-weather">
                     <div class="current-header">
                         <div class="location-info">
@@ -93,14 +89,13 @@
                                 <i class="fas fa-sun"></i>
                             </div>
                         </div>
-                        
+
                         <div class="weather-description">
                             <p class="condition" id="weatherCondition">Loading...</p>
                             <p class="feels-like">Feels like <span id="feelsLike">--°</span></p>
                         </div>
                     </div>
 
-                    <!-- Weather Details Grid -->
                     <div class="weather-details">
                         <div class="detail-card">
                             <i class="fas fa-eye"></i>
@@ -109,7 +104,6 @@
                                 <span class="detail-value" id="visibility">-- km</span>
                             </div>
                         </div>
-                        
                         <div class="detail-card">
                             <i class="fas fa-tint"></i>
                             <div class="detail-info">
@@ -117,7 +111,6 @@
                                 <span class="detail-value" id="humidity">--%</span>
                             </div>
                         </div>
-                        
                         <div class="detail-card">
                             <i class="fas fa-wind"></i>
                             <div class="detail-info">
@@ -125,7 +118,6 @@
                                 <span class="detail-value" id="windSpeed">-- km/h</span>
                             </div>
                         </div>
-                        
                         <div class="detail-card">
                             <i class="fas fa-thermometer-half"></i>
                             <div class="detail-info">
@@ -133,7 +125,6 @@
                                 <span class="detail-value" id="pressure">-- hPa</span>
                             </div>
                         </div>
-                        
                         <div class="detail-card">
                             <i class="fas fa-sun"></i>
                             <div class="detail-info">
@@ -144,31 +135,26 @@
                     </div>
                 </section>
 
-                <!-- Hourly Forecast -->
                 <section class="hourly-forecast">
                     <h3 class="section-title">24-Hour Forecast</h3>
                     <div class="hourly-container" id="hourlyContainer">
                         <div class="hourly-scroll" id="hourlyScroll">
-                            <!-- Hourly forecast cards will be inserted here -->
+                            <!-- Hourly forecast cards inserted by JS -->
                         </div>
                     </div>
                 </section>
 
-                <!-- Weekly Forecast -->
                 <section class="weekly-forecast">
                     <h3 class="section-title">Weekly Forecast</h3>
                     <div class="weekly-container" id="weeklyContainer">
                         <div class="weekly-list" id="weeklyList">
-                            <!-- Weekly forecast cards will be inserted here -->
+                            <!-- Weekly forecast cards inserted by JS -->
                         </div>
                     </div>
                 </section>
-
-                <!-- Map Section -->
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2025 Weather App by Pati Yuktha</p>
         </footer>
