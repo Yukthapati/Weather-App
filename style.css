@@ -611,10 +611,10 @@ body {
   min-width: 100%;
 }
 
-.weekly-card i {
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
-  color: var(--color-text-tertiary); /* This is a muted color */
+.w.weekly-card i {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary); /* or use a brighter custom color */
 }
 
 
