@@ -41,12 +41,13 @@
   --transition-slow: 0.3s ease;
 }
 
-/* Light Theme */
 .light-theme {
-  --bg-primary: #ffffff;
-  --text-primary: #0F172A;
-  --card-bg: #f1f5f9;
-  --icon-color: #0F172A;
+  --bg-primary: #f4f7fb;           /* Light but not white */
+  --text-primary: #1e293b;         /* Slate-800 for readable text */
+  --text-secondary: #475569;       /* Slate-600 */
+  --card-bg: #ffffff;              /* Cards remain white */
+  --card-border: #e2e8f0;          /* Light border for cards */
+  --icon-color: #fbbf24;           /* Sunny icon yellow */
 }
 
 /* Dark Theme */
