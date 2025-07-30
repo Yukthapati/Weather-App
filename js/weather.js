@@ -202,6 +202,7 @@ class WeatherApp {
             const lowTemp = highTemp - 5 - Math.random() * 5;
 
             days.push({
+                date,
                 day: i === 0 ? 'Today' : weekdays[date.getDay()],
                 condition: conditions[conditionIndex],
                 icon: icons[conditionIndex],
@@ -209,6 +210,8 @@ class WeatherApp {
                 low: Math.round(this.currentUnit === 'celsius' ? lowTemp : (lowTemp * 9/5) + 32)
             });
         }
+
+        days.sort((a, b) => a.date - b.date);
 
         weeklyList.innerHTML = days.map(day => `
             <div class="weekly-card">
