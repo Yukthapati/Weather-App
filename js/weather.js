@@ -26,6 +26,12 @@ class WeatherApp {
         // Apply theme
         document.body.classList.toggle('dark-theme', this.currentTheme === 'dark');
         
+        // Update theme icon
+        const themeIcon = document.querySelector('#themeToggle i');
+        if (themeIcon) {
+            themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        
         // Update unit display
         const unitDisplay = document.querySelector('.unit-display');
         if (unitDisplay) {
