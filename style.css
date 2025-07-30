@@ -7,16 +7,6 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
   
-  /* Light Theme */
---color-bg-primary: #FFFFFF;
---color-bg-secondary: #F8FAFC;
---color-bg-tertiary: #F1F5F9;
---color-text-primary: #0F172A;
---color-text-secondary: #475569;
---color-text-tertiary: #94A3B8;
---color-border: #E2E8F0;
---color-shadow: rgba(15, 23, 42, 0.1);
-
   
   /* Spacing System (8px base) */
   --spacing-xs: 4px;
@@ -51,16 +41,41 @@
   --transition-slow: 0.3s ease;
 }
 
+/* Light Theme */
+.light-theme {
+  --bg-primary: #ffffff;
+  --text-primary: #0F172A;
+  --card-bg: #f1f5f9;
+  --icon-color: #0F172A;
+}
+
 /* Dark Theme */
-[data-theme="dark"] {
-  --color-bg-primary: #0F172A;
-  --color-bg-secondary: #1E293B;
-  --color-bg-tertiary: #334155;
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #CBD5E1;
-  --color-text-tertiary: #64748B;
-  --color-border: #334155;
-  --color-shadow: rgba(0, 0, 0, 0.3);
+.dark-theme {
+  --bg-primary: #0F172A;
+  --text-primary: #ffffff;
+  --card-bg: #1E293B;
+  --icon-color: #fbbf24;
+}
+
+/* Apply variables */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.card,
+.hourly-card,
+.weekly-card {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+i {
+  color: var(--icon-color);
+}
+
 }
 
 /* Reset */
