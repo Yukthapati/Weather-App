@@ -662,6 +662,21 @@ body {
   background-color: var(--color-border);
   border-radius: 4px;
 }
+/* Weekly forecast icon colors */
+.color-yellow i {
+  color: #FFD700; /* gold/yellow */
+}
+
+.color-white i {
+  color: #FFFFFF;
+}
+
+.color-yellow-white i {
+  background: linear-gradient(to top right, #FFD700 50%, #FFFFFF 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 
 /* Footer */
