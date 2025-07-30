@@ -249,6 +249,7 @@ class WeatherApp {
             };
             
             this.displayWeatherData(demoData);
+            this.showWeeklyForecast();
         }, 1000);
     }
 
