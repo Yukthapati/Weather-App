@@ -529,9 +529,13 @@ body {
 /* Weather Details Grid */
 .weather-details {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-md);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-lg);
+  justify-content: center;
+  align-items: start;
+  margin-top: var(--spacing-lg);
 }
+
 
 .detail-card {
   display: flex;
