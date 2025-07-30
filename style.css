@@ -94,6 +94,84 @@ body {
   z-index: -1;
   pointer-events: none;
   transition: opacity var(--transition-slow);
+  overflow: hidden;
+}
+
+/* Weather Background Themes */
+.weather-bg-sunny {
+  background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 50%, #F0E68C 100%);
+}
+
+.weather-bg-cloudy {
+  background: linear-gradient(135deg, #B0C4DE 0%, #D3D3D3 50%, #A9A9A9 100%);
+}
+
+.weather-bg-rainy {
+  background: linear-gradient(135deg, #4682B4 0%, #708090 50%, #2F4F4F 100%);
+}
+
+.weather-bg-snowy {
+  background: linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 50%, #D3D3D3 100%);
+}
+
+.weather-bg-clear {
+  background: linear-gradient(135deg, #87CEEB 0%, #ADD8E6 50%, #FFE4B5 100%);
+}
+
+/* Animated Weather Icons in Background */
+.weather-icon-bg {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.1;
+  animation: floatBackground 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.weather-icon-bg.sun {
+  color: #FFD700;
+  animation: rotateSun 10s linear infinite;
+}
+
+.weather-icon-bg.cloud {
+  color: #B0C4DE;
+  animation: floatCloud 12s ease-in-out infinite;
+}
+
+.weather-icon-bg.rain {
+  color: #4682B4;
+  animation: rainDrop 3s ease-in-out infinite;
+}
+
+.weather-icon-bg.snow {
+  color: #F0F8FF;
+  animation: snowFall 6s ease-in-out infinite;
+}
+
+@keyframes floatBackground {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-10px) translateX(-10px); }
+  75% { transform: translateY(-30px) translateX(5px); }
+}
+
+@keyframes rotateSun {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes floatCloud {
+  0%, 100% { transform: translateX(0px) translateY(0px); }
+  50% { transform: translateX(30px) translateY(-15px); }
+}
+
+@keyframes rainDrop {
+  0%, 100% { transform: translateY(0px); opacity: 0.1; }
+  50% { transform: translateY(20px); opacity: 0.3; }
+}
+
+@keyframes snowFall {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+  50% { transform: translateY(30px) rotate(180deg); opacity: 0.2; }
 }
 
 /* Header */
@@ -572,6 +650,83 @@ body {
   color: var(--color-text-primary);
 }
 
+/* Weekly Forecast */
+.weekly-forecast {
+  margin-bottom: var(--spacing-xl);
+}
+
+.weekly-container {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 6px var(--color-shadow);
+}
+
+.weekly-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.weekly-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.weekly-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.weekly-day {
+  flex: 1;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  min-width: 100px;
+}
+
+.weekly-weather {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 2;
+}
+
+.weekly-icon {
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  width: 32px;
+  text-align: center;
+}
+
+.weekly-condition {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.weekly-temps {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: 80px;
+  justify-content: flex-end;
+}
+
+.weekly-high {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.weekly-low {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
 /* Footer */
 .footer {
   background: var(--color-bg-secondary);
@@ -649,6 +804,21 @@ body {
   
   .favorites-list {
     gap: var(--spacing-xs);
+  }
+  
+  .weekly-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .weekly-weather {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .weekly-temps {
+    justify-content: flex-start;
   }
 }
 

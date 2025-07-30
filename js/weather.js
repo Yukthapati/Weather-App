@@ -94,6 +94,8 @@ class WeatherApp {
 
         this.displayWeatherData(demoData);
         this.showHourlyForecast();
+        this.showWeeklyForecast();
+        this.animations.updateWeatherBackground(demoData.condition);
     }
 
     displayWeatherData(data) {
@@ -139,6 +141,9 @@ class WeatherApp {
 
         // Show weather content
         this.showWeatherContent();
+        
+        // Update background based on weather condition
+        this.animations.updateWeatherBackground(data.condition);
     }
 
     updateWeatherDetails(data) {
