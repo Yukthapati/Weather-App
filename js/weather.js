@@ -194,6 +194,7 @@ class WeatherApp {
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const conditions = ['Clear Sky', 'Partly Cloudy', 'Cloudy', 'Light Rain', 'Sunny'];
         const icons = ['fas fa-sun', 'fas fa-cloud-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-sun'];
+        const iconColors = ['color-yellow', 'color-yellow-white', 'color-white', 'color-white', 'color-yellow'];
 
         for (let i = 0; i < 7; i++) {
             const date = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
@@ -206,19 +207,26 @@ class WeatherApp {
                 day: i === 0 ? 'Today' : weekdays[date.getDay()],
                 condition: conditions[conditionIndex],
                 icon: icons[conditionIndex],
+                iconColor: iconColors[conditionIndex],
                 high: Math.round(this.currentUnit === 'celsius' ? highTemp : (highTemp * 9/5) + 32),
                 low: Math.round(this.currentUnit === 'celsius' ? lowTemp : (lowTemp * 9/5) + 32)
             });
         }
 
+        days.sort((a, b) => a.date - b.date);
+
         weeklyList.innerHTML = days.map(day => `
-            <div class="hourly-card">
-                <div class="hourly-time">${day.day}</div>
-                <div class="hourly-icon">
-                    <i class="${day.icon}"></i>
+            <div class="weekly-card">
+                <div class="weekly-day">${day.day}</div>
+                <div class="weekly-weather">
+                    <div class="weekly-icon">
+                        <i class="${day.icon} ${day.iconColor}"></i>
+                    </div>
+                    <div class="weekly-condition">${day.condition}</div>
                 </div>
-                <div class="hourly-temp">
-                    <span>${day.high}°</span> / <span>${day.low}°</span>
+                <div class="weekly-temps">
+                    <span class="weekly-high">${day.high}°</span>
+                    <span class="weekly-low">${day.low}°</span>
                 </div>
             </div>
         `).join('');
