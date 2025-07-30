@@ -552,6 +552,7 @@ body {
 
 .detail-info {
   flex: 1;
+  min-width: 0;
 }
 
 .detail-label {
@@ -561,6 +562,9 @@ body {
 }
 
 .detail-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   display: block;
   font-size: var(--font-size-lg);
   font-weight: 600;
