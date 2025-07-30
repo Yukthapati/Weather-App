@@ -211,20 +211,14 @@ class WeatherApp {
             });
         }
 
-        days.sort((a, b) => a.date - b.date);
-
         weeklyList.innerHTML = days.map(day => `
-            <div class="weekly-card">
-                <div class="weekly-day">${day.day}</div>
-                <div class="weekly-weather">
-                    <div class="weekly-icon">
-                        <i class="${day.icon}"></i>
-                    </div>
-                    <div class="weekly-condition">${day.condition}</div>
+            <div class="hourly-card">
+                <div class="hourly-time">${day.day}</div>
+                <div class="hourly-icon">
+                    <i class="${day.icon}"></i>
                 </div>
-                <div class="weekly-temps">
-                    <span class="weekly-high">${day.high}°</span>
-                    <span class="weekly-low">${day.low}°</span>
+                <div class="hourly-temp">
+                    <span>${day.high}°</span> / <span>${day.low}°</span>
                 </div>
             </div>
         `).join('');
