@@ -7,6 +7,16 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
   
+  /* Light Theme */
+--color-bg-primary: #FFFFFF;
+--color-bg-secondary: #F8FAFC;
+--color-bg-tertiary: #F1F5F9;
+--color-text-primary: #0F172A;
+--color-text-secondary: #475569;
+--color-text-tertiary: #94A3B8;
+--color-border: #E2E8F0;
+--color-shadow: rgba(15, 23, 42, 0.1);
+
   
   /* Spacing System (8px base) */
   --spacing-xs: 4px;
@@ -41,50 +51,16 @@
   --transition-slow: 0.3s ease;
 }
 
-.light-theme {
-  --bg-primary: #f4f7fb;           /* Light but not white */
-  --text-primary: #1e293b;         /* Slate-800 for readable text */
-  --text-secondary: #475569;       /* Slate-600 */
-  --card-bg: #ffffff;              /* Cards remain white */
-  --card-border: #e2e8f0;          /* Light border for cards */
-  --icon-color: #fbbf24;           /* Sunny icon yellow */
-}
-
 /* Dark Theme */
-.dark-theme {
-  --bg-primary: #0F172A;
-  --text-primary: #ffffff;
-  --card-bg: #1E293B;
-  --icon-color: #fbbf24;
-}
-
-/* Apply variables */
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.card,
-.hourly-card,
-.weekly-card {
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  padding: 1rem;
-  transition: background-color 0.3s, color 0.3s;
-}
-body.light-theme {
-  background: linear-gradient(to bottom, #f0f4f8, #e5ecf3);
-}
-
-i {
-  color: var(--icon-color);
-}
-
+[data-theme="dark"] {
+  --color-bg-primary: #0F172A;
+  --color-bg-secondary: #1E293B;
+  --color-bg-tertiary: #334155;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary: #64748B;
+  --color-border: #334155;
+  --color-shadow: rgba(0, 0, 0, 0.3);
 }
 
 /* Reset */
@@ -631,50 +607,31 @@ body {
 .weekly-list {
   display: flex;
   gap: 1rem;
-  padding: 0 1rem;
+  flex-wrap: nowrap;
+  min-width: 100%;
 }
 
-.weekly-card {
-  background: var(--color-bg-secondary);
-  border-radius: 12px;
-  padding: 1rem;
-  min-width: 120px;
-  text-align: center;
-  color: var(--color-text-primary);
-  box-shadow: 0 2px 6px var(--color-shadow);
-  flex-shrink: 0;
+.w.weekly-card i {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary); /* or use a brighter custom color */
 }
+
 
 .weekly-day {
   font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.weekly-icon {
-  font-size: 2rem;
-  margin: 0.5rem 0;
-  color: #fbbf24; /* sun-yellow for icons */
-}
-
-.weekly-description {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .weekly-temp {
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-.weekly-temp .high {
-  color: #facc15; /* warm yellow */
-  font-weight: 600;
-}
-
-.weekly-temp .low {
-  color: #60a5fa; /* cool blue */
-
+.weekly-card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  color: var(--color-text-tertiary);
 }
 
 /* Optional: style scrollbar */
@@ -686,21 +643,6 @@ body {
   background-color: var(--color-border);
   border-radius: 4px;
 }
-/* Weekly forecast icon colors */
-.color-yellow i {
-  color: #FFD700; /* gold/yellow */
-}
-
-.color-white i {
-  color: #FFFFFF;
-}
-
-.color-yellow-white i {
-  background: linear-gradient(to top right, #FFD700 50%, #FFFFFF 50%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 
 
 /* Footer */
