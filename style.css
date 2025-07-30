@@ -596,87 +596,55 @@ body {
 }
 /* Weekly Forecast */
 .weekly-forecast {
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  box-shadow: 0 4px 6px var(--color-shadow);
+  margin-bottom: 2rem;
 }
 
-.weekly-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--spacing-md);
+.weekly-container {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.weekly-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  min-width: 100%;
 }
 
 .weekly-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex: 0 0 auto;
+  width: 100px;
   background-color: var(--color-bg-tertiary);
-  padding: 12px;
-  border-radius: 12px;
+  padding: 1rem;
+  border-radius: 10px;
   text-align: center;
-  width: 120px;
   box-shadow: 0 2px 4px var(--color-shadow);
 }
 
 .weekly-day {
   font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 6px;
-  color: var(--color-text-primary);
-}
-
-.weekly-weather {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 6px;
-}
-
-.weekly-icon i {
-  font-size: 24px;
-  color: var(--color-text-secondary);
-}
-
-.weekly-condition {
-  font-size: 14px;
-  color: var(--color-text-secondary);
-}
-
-.weekly-temps {
-  display: flex;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-primary);
-}
-
-
-.weekly-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 12px var(--color-shadow);
-}
-
-.weekly-day {
-  font-weight: 600;
-  font-size: var(--font-size-base);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.weekly-icon {
-  font-size: var(--font-size-2xl);
-  color: var(--color-accent);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.5rem;
 }
 
 .weekly-temp {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-secondary);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.weekly-card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  color: var(--color-text-tertiary);
+}
+
+/* Optional: style scrollbar */
+.weekly-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.weekly-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
 }
 
 
