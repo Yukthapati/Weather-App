@@ -206,6 +206,51 @@ class WeatherApp {
         `).join('');
     }
 
+    showWeeklyForecast() {
+        const weeklyContainer = document.getElementById('weeklyForecast');
+        if (!weeklyContainer) return;
+
+        // Generate demo weekly data
+        const days = [];
+        const today = new Date();
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const conditions = ['Clear Sky', 'Partly Cloudy', 'Cloudy', 'Light Rain', 'Sunny'];
+        const icons = ['fas fa-sun', 'fas fa-cloud-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-sun'];
+        
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
+            const conditionIndex = Math.floor(Math.random() * conditions.length);
+            const highTemp = 25 + Math.random() * 10;
+            const lowTemp = highTemp - 5 - Math.random() * 5;
+            
+            days.push({
+                day: i === 0 ? 'Today' : weekdays[date.getDay()],
+                condition: conditions[conditionIndex],
+                icon: icons[conditionIndex],
+                high: Math.round(this.currentUnit === 'celsius' ? highTemp : (highTemp * 9/5) + 32),
+                low: Math.round(this.currentUnit === 'celsius' ? lowTemp : (lowTemp * 9/5) + 32)
+            });
+        }
+
+        // Create weekly forecast cards
+        const weeklyScroll = weeklyContainer.querySelector('.weekly-scroll');
+        if (weeklyScroll) {
+            weeklyScroll.innerHTML = days.map(day => `
+                <div class="weekly-card">
+                    <div class="weekly-day">${day.day}</div>
+                    <div class="weekly-icon">
+                        <i class="${day.icon}"></i>
+                    </div>
+                    <div class="weekly-condition">${day.condition}</div>
+                    <div class="weekly-temps">
+                        <span class="weekly-high">${day.high}°</span>
+                        <span class="weekly-low">${day.low}°</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
     showWeatherContent() {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('errorState').style.display = 'none';
