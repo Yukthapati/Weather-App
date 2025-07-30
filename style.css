@@ -547,16 +547,17 @@ body {
 .detail-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.1); /* subtle translucent background */
-  border: 1px solid rgba(255, 255, 255, 0.4); /* white translucent border */
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* subtle shadow */
-  transition: all var(--transition-base);
-  backdrop-filter: blur(8px); /* optional: glass effect */
-  -webkit-backdrop-filter: blur(8px);
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--color-shadow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  min-width: 150px;
 }
+
 
 }
 
