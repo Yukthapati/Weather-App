@@ -542,27 +542,23 @@ body {
 }
 
 
-.detail-card {
+..detail-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
   background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  box-shadow: 0 4px 10px var(--color-shadow);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  min-width: 150px;
-}
-
-
+  box-shadow: 0 2px 6px var(--color-shadow);
+  transition: all var(--transition-base);
 }
 
 .detail-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--color-shadow);
 }
+
 
 .detail-card i {
   font-size: var(--font-size-xl);
