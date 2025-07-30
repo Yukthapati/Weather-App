@@ -611,15 +611,12 @@ body {
   min-width: 100%;
 }
 
-.weekly-card {
-  flex: 0 0 auto;
-  width: 100px;
-  background-color: var(--color-bg-tertiary);
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 4px var(--color-shadow);
+.weekly-card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  color: var(--color-text-tertiary); /* This is a muted color */
 }
+
 
 .weekly-day {
   font-weight: 600;
