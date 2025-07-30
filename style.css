@@ -7,15 +7,19 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
   
-  /* Light Theme */
+ .light-theme {
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F8FAFC;
-  --color-bg-tertiary: #F1F5F9;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-tertiary: #94A3B8;
-  --color-border: #E2E8F0;
-  --color-shadow: rgba(15, 23, 42, 0.1);
+  --color-bg-secondary: #F5F7FA;
+  --color-bg-tertiary: #EEF2F6;
+
+  --color-text-primary: #1A1C1E;
+  --color-text-secondary: #4B5563;
+  --color-text-tertiary: #7B8794;
+
+  --color-border: #D1D5DB;
+  --color-shadow: rgba(0, 0, 0, 0.06);
+}
+
   
   /* Spacing System (8px base) */
   --spacing-xs: 4px;
