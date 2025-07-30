@@ -536,11 +536,10 @@ body {
 /* Weather Details Grid */
 .weather-details {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-lg);
-  justify-content: center;
-  align-items: start;
-  margin-top: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 
