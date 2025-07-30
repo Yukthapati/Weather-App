@@ -593,6 +593,53 @@ body {
   font-weight: 600;
   color: var(--color-text-primary);
 }
+/* Weekly Forecast */
+.weekly-forecast {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: 0 4px 6px var(--color-shadow);
+}
+
+.weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.weekly-card {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  text-align: center;
+  transition: transform var(--transition-base);
+}
+
+.weekly-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px var(--color-shadow);
+}
+
+.weekly-day {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.weekly-icon {
+  font-size: var(--font-size-2xl);
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.weekly-temp {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
 
 /* Footer */
 .footer {
