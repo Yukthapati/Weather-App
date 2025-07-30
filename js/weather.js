@@ -7,7 +7,7 @@ class WeatherApp {
         this.animations = new AnimationManager();
         this.currentUnit = 'celsius';
         this.currentTheme = 'light';
-        
+
         this.initializeApp();
     }
 
@@ -22,17 +22,15 @@ class WeatherApp {
         const settings = this.storage.getSettings();
         this.currentUnit = settings.unit;
         this.currentTheme = settings.theme;
-        
-        // Apply theme
+
         document.body.classList.toggle('dark-theme', this.currentTheme === 'dark');
-        
-        // Update theme icon
+        document.body.classList.toggle('light-theme', this.currentTheme === 'light');
+
         const themeIcon = document.querySelector('#themeToggle i');
         if (themeIcon) {
             themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
-        
-        // Update unit display
+
         const unitDisplay = document.querySelector('.unit-display');
         if (unitDisplay) {
             unitDisplay.textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
@@ -40,7 +38,6 @@ class WeatherApp {
     }
 
     setupEventListeners() {
-        // Search form
         const searchForm = document.getElementById('searchForm');
         if (searchForm) {
             searchForm.addEventListener('submit', (e) => {
@@ -52,25 +49,21 @@ class WeatherApp {
             });
         }
 
-        // Location button
         const unitToggle = document.getElementById('unitToggle');
         if (unitToggle) {
             unitToggle.addEventListener('click', () => this.toggleUnit());
         }
 
-        // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
             themeToggle.addEventListener('click', () => this.toggleTheme());
         }
 
-        // Favorite button
         const favoriteBtn = document.getElementById('favoriteBtn');
         if (favoriteBtn) {
             favoriteBtn.addEventListener('click', () => this.toggleFavorite());
         }
 
-        // Retry button
         const retryBtn = document.getElementById('retryBtn');
         if (retryBtn) {
             retryBtn.addEventListener('click', () => this.retryLastSearch());
@@ -78,7 +71,6 @@ class WeatherApp {
     }
 
     showDemoData() {
-        // Show demo weather data for Mumbai
         const demoData = {
             name: 'Mumbai',
             country: 'IN',
@@ -99,13 +91,11 @@ class WeatherApp {
     }
 
     displayWeatherData(data) {
-        // Update city name
         const cityName = document.getElementById('cityName');
         if (cityName) {
             cityName.textContent = `${data.name}, ${data.country}`;
         }
 
-        // Update date/time
         const dateTime = document.getElementById('dateTime');
         if (dateTime) {
             dateTime.textContent = new Date().toLocaleDateString('en-US', {
@@ -116,33 +106,25 @@ class WeatherApp {
             });
         }
 
-        // Update temperature
         const currentTemp = document.getElementById('currentTemp');
         if (currentTemp) {
             const temp = this.currentUnit === 'celsius' ? data.temp : (data.temp * 9/5) + 32;
             currentTemp.textContent = `${Math.round(temp)}°`;
         }
 
-        // Update condition
         const weatherCondition = document.getElementById('weatherCondition');
         if (weatherCondition) {
             weatherCondition.textContent = data.condition;
         }
 
-        // Update feels like
         const feelsLike = document.getElementById('feelsLike');
         if (feelsLike) {
             const temp = this.currentUnit === 'celsius' ? data.feelsLike : (data.feelsLike * 9/5) + 32;
             feelsLike.textContent = `${Math.round(temp)}°`;
         }
 
-        // Update weather details
         this.updateWeatherDetails(data);
-
-        // Show weather content
         this.showWeatherContent();
-        
-        // Update background based on weather condition
         this.animations.updateWeatherBackground(data.condition);
     }
 
@@ -162,7 +144,6 @@ class WeatherApp {
             }
         });
 
-        // Update UV index color
         const uvElement = document.getElementById('uvIndex');
         if (uvElement) {
             uvElement.className = 'detail-value uv-index';
@@ -177,14 +158,13 @@ class WeatherApp {
         const hourlyScroll = document.getElementById('hourlyScroll');
         if (!hourlyScroll) return;
 
-        // Generate demo hourly data
         const hours = [];
         const now = new Date();
-        
+
         for (let i = 0; i < 24; i++) {
             const hour = new Date(now.getTime() + (i * 60 * 60 * 1000));
-            const temp = 28 + Math.sin(i * 0.3) * 5; // Simulate temperature variation
-            
+            const temp = 28 + Math.sin(i * 0.3) * 5;
+
             hours.push({
                 time: hour.getHours() === 0 ? '12 AM' : 
                       hour.getHours() <= 12 ? `${hour.getHours()} AM` : 
@@ -194,7 +174,6 @@ class WeatherApp {
             });
         }
 
-        // Create hourly cards
         hourlyScroll.innerHTML = hours.map(hour => `
             <div class="hourly-card">
                 <div class="hourly-time">${hour.time}</div>
@@ -210,19 +189,18 @@ class WeatherApp {
         const weeklyList = document.getElementById('weeklyList');
         if (!weeklyList) return;
 
-        // Generate demo weekly data
         const days = [];
         const today = new Date();
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const conditions = ['Clear Sky', 'Partly Cloudy', 'Cloudy', 'Light Rain', 'Sunny'];
         const icons = ['fas fa-sun', 'fas fa-cloud-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-sun'];
-        
+
         for (let i = 0; i < 7; i++) {
             const date = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
             const conditionIndex = Math.floor(Math.random() * conditions.length);
             const highTemp = 25 + Math.random() * 10;
             const lowTemp = highTemp - 5 - Math.random() * 5;
-            
+
             days.push({
                 day: i === 0 ? 'Today' : weekdays[date.getDay()],
                 condition: conditions[conditionIndex],
@@ -232,7 +210,6 @@ class WeatherApp {
             });
         }
 
-        // Create weekly forecast cards
         weeklyList.innerHTML = days.map(day => `
             <div class="weekly-card">
                 <div class="weekly-day">${day.day}</div>
@@ -266,7 +243,7 @@ class WeatherApp {
         document.getElementById('weatherContent').style.display = 'none';
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('errorState').style.display = 'flex';
-        
+
         const errorMessage = document.getElementById('errorMessage');
         if (errorMessage) {
             errorMessage.textContent = message;
@@ -276,8 +253,7 @@ class WeatherApp {
     searchWeather(city) {
         console.log(`Searching weather for: ${city}`);
         this.showLoading();
-        
-        // Simulate API call with demo data
+
         setTimeout(() => {
             const demoData = {
                 name: city,
@@ -291,7 +267,7 @@ class WeatherApp {
                 visibility: 8 + Math.random() * 4,
                 uvIndex: Math.floor(Math.random() * 11)
             };
-            
+
             this.displayWeatherData(demoData);
             this.showWeeklyForecast();
         }, 1000);
@@ -299,18 +275,16 @@ class WeatherApp {
 
     toggleUnit() {
         this.currentUnit = this.currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
-        
+
         const unitDisplay = document.querySelector('.unit-display');
         if (unitDisplay) {
             unitDisplay.textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
         }
 
-        // Save setting
         const settings = this.storage.getSettings();
         settings.unit = this.currentUnit;
         this.storage.saveSettings(settings);
 
-        // Refresh display if weather data is shown
         if (document.getElementById('weatherContent').style.display !== 'none') {
             this.showDemoData();
         }
@@ -319,13 +293,13 @@ class WeatherApp {
     toggleTheme() {
         this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
         document.body.classList.toggle('dark-theme', this.currentTheme === 'dark');
+        document.body.classList.toggle('light-theme', this.currentTheme === 'light');
 
         const themeIcon = document.querySelector('#themeToggle i');
         if (themeIcon) {
             themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
-        // Save setting
         const settings = this.storage.getSettings();
         settings.theme = this.currentTheme;
         this.storage.saveSettings(settings);
@@ -333,13 +307,12 @@ class WeatherApp {
 
     toggleFavorite() {
         console.log('Toggle favorite clicked');
-        // Implementation for adding/removing favorites
     }
 
     loadFavorites() {
         const favorites = this.storage.getFavorites();
         const favoritesList = document.getElementById('favoritesList');
-        
+
         if (favoritesList) {
             if (favorites.length === 0) {
                 favoritesList.innerHTML = '<p class="no-favorites">No favorite cities yet. Search for a city and add it to favorites!</p>';
@@ -358,7 +331,6 @@ class WeatherApp {
     }
 }
 
-// Initialize the weather app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.weatherApp = new WeatherApp();
 });
