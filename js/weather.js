@@ -23,25 +23,14 @@ class WeatherApp {
         this.currentUnit = settings.unit;
         this.currentTheme = settings.theme;
 
-        // Remove both theme classes first
         document.body.classList.remove('dark-theme', 'light-theme');
-        
-        // Add the current theme class
-        if (this.currentTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.add('light-theme');
-        }
+        document.body.classList.add(this.currentTheme === 'dark' ? 'dark-theme' : 'light-theme');
 
         const themeIcon = document.querySelector('#themeToggle i');
-        if (themeIcon) {
-            themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
+        if (themeIcon) themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
         const unitDisplay = document.querySelector('.unit-display');
-        if (unitDisplay) {
-            unitDisplay.textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
-        }
+        if (unitDisplay) unitDisplay.textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
     }
 
     setupEventListeners() {
@@ -56,25 +45,10 @@ class WeatherApp {
             });
         }
 
-        const unitToggle = document.getElementById('unitToggle');
-        if (unitToggle) {
-            unitToggle.addEventListener('click', () => this.toggleUnit());
-        }
-
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => this.toggleTheme());
-        }
-
-        const favoriteBtn = document.getElementById('favoriteBtn');
-        if (favoriteBtn) {
-            favoriteBtn.addEventListener('click', () => this.toggleFavorite());
-        }
-
-        const retryBtn = document.getElementById('retryBtn');
-        if (retryBtn) {
-            retryBtn.addEventListener('click', () => this.retryLastSearch());
-        }
+        document.getElementById('unitToggle')?.addEventListener('click', () => this.toggleUnit());
+        document.getElementById('themeToggle')?.addEventListener('click', () => this.toggleTheme());
+        document.getElementById('favoriteBtn')?.addEventListener('click', () => this.toggleFavorite());
+        document.getElementById('retryBtn')?.addEventListener('click', () => this.retryLastSearch());
     }
 
     showDemoData() {
@@ -98,37 +72,16 @@ class WeatherApp {
     }
 
     displayWeatherData(data) {
-        const cityName = document.getElementById('cityName');
-        if (cityName) {
-            cityName.textContent = `${data.name}, ${data.country}`;
-        }
+        document.getElementById('cityName').textContent = `${data.name}, ${data.country}`;
+        document.getElementById('dateTime').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
 
-        const dateTime = document.getElementById('dateTime');
-        if (dateTime) {
-            dateTime.textContent = new Date().toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
+        const convert = (t) => this.currentUnit === 'celsius' ? t : (t * 9/5) + 32;
 
-        const currentTemp = document.getElementById('currentTemp');
-        if (currentTemp) {
-            const temp = this.currentUnit === 'celsius' ? data.temp : (data.temp * 9/5) + 32;
-            currentTemp.textContent = `${Math.round(temp)}°`;
-        }
-
-        const weatherCondition = document.getElementById('weatherCondition');
-        if (weatherCondition) {
-            weatherCondition.textContent = data.condition;
-        }
-
-        const feelsLike = document.getElementById('feelsLike');
-        if (feelsLike) {
-            const temp = this.currentUnit === 'celsius' ? data.feelsLike : (data.feelsLike * 9/5) + 32;
-            feelsLike.textContent = `${Math.round(temp)}°`;
-        }
+        document.getElementById('currentTemp').textContent = `${Math.round(convert(data.temp))}°`;
+        document.getElementById('weatherCondition').textContent = data.condition;
+        document.getElementById('feelsLike').textContent = `${Math.round(convert(data.feelsLike))}°`;
 
         this.updateWeatherDetails(data);
         this.showWeatherContent();
@@ -144,20 +97,18 @@ class WeatherApp {
             uvIndex: data.uvIndex
         };
 
-        Object.entries(details).forEach(([key, value]) => {
-            const element = document.getElementById(key);
-            if (element) {
-                element.textContent = value;
-            }
-        });
+        for (const [key, value] of Object.entries(details)) {
+            const el = document.getElementById(key);
+            if (el) el.textContent = value;
+        }
 
-        const uvElement = document.getElementById('uvIndex');
-        if (uvElement) {
-            uvElement.className = 'detail-value uv-index';
-            if (data.uvIndex <= 2) uvElement.classList.add('uv-low');
-            else if (data.uvIndex <= 5) uvElement.classList.add('uv-moderate');
-            else if (data.uvIndex <= 7) uvElement.classList.add('uv-high');
-            else uvElement.classList.add('uv-very-high');
+        const uv = document.getElementById('uvIndex');
+        if (uv) {
+            uv.className = 'detail-value uv-index';
+            if (data.uvIndex <= 2) uv.classList.add('uv-low');
+            else if (data.uvIndex <= 5) uv.classList.add('uv-moderate');
+            else if (data.uvIndex <= 7) uv.classList.add('uv-high');
+            else uv.classList.add('uv-very-high');
         }
     }
 
@@ -165,29 +116,25 @@ class WeatherApp {
         const hourlyScroll = document.getElementById('hourlyScroll');
         if (!hourlyScroll) return;
 
-        const hours = [];
         const now = new Date();
-
-        for (let i = 0; i < 24; i++) {
-            const hour = new Date(now.getTime() + (i * 60 * 60 * 1000));
+        const hours = Array.from({ length: 24 }, (_, i) => {
+            const hour = new Date(now.getTime() + i * 3600000);
             const temp = 28 + Math.sin(i * 0.3) * 5;
 
-            hours.push({
-                time: hour.getHours() === 0 ? '12 AM' : 
-                      hour.getHours() <= 12 ? `${hour.getHours()} AM` : 
+            return {
+                time: hour.getHours() === 0 ? '12 AM' :
+                      hour.getHours() <= 12 ? `${hour.getHours()} AM` :
                       `${hour.getHours() - 12} PM`,
                 temp: Math.round(temp),
                 icon: 'fas fa-cloud-sun'
-            });
-        }
+            };
+        });
 
-        hourlyScroll.innerHTML = hours.map(hour => `
+        hourlyScroll.innerHTML = hours.map(h => `
             <div class="hourly-card">
-                <div class="hourly-time">${hour.time}</div>
-                <div class="hourly-icon">
-                    <i class="${hour.icon}"></i>
-                </div>
-                <div class="hourly-temp">${hour.temp}°</div>
+                <div class="hourly-time">${h.time}</div>
+                <div class="hourly-icon"><i class="${h.icon}"></i></div>
+                <div class="hourly-temp">${h.temp}°</div>
             </div>
         `).join('');
     }
@@ -196,37 +143,31 @@ class WeatherApp {
         const weeklyList = document.getElementById('weeklyList');
         if (!weeklyList) return;
 
-        const days = [];
         const today = new Date();
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const conditions = ['Clear Sky', 'Partly Cloudy', 'Cloudy', 'Light Rain', 'Sunny'];
         const icons = ['fas fa-sun', 'fas fa-cloud-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-sun'];
 
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
+        const days = Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(today.getTime() + i * 86400000);
             const conditionIndex = Math.floor(Math.random() * conditions.length);
             const highTemp = 25 + Math.random() * 10;
             const lowTemp = highTemp - 5 - Math.random() * 5;
 
-            days.push({
-                date,
+            return {
                 day: i === 0 ? 'Today' : weekdays[date.getDay()],
                 condition: conditions[conditionIndex],
                 icon: icons[conditionIndex],
                 high: Math.round(this.currentUnit === 'celsius' ? highTemp : (highTemp * 9/5) + 32),
                 low: Math.round(this.currentUnit === 'celsius' ? lowTemp : (lowTemp * 9/5) + 32)
-            });
-        }
+            };
+        });
 
-        weeklyList.innerHTML = days.map(day => `
+        weeklyList.innerHTML = days.map(d => `
             <div class="hourly-card">
-                <div class="hourly-time">${day.day}</div>
-                <div class="hourly-icon">
-                    <i class="${day.icon}"></i>
-                </div>
-                <div class="hourly-temp">
-                    <span>${day.high}°</span> / <span>${day.low}°</span>
-                </div>
+                <div class="hourly-time">${d.day}</div>
+                <div class="hourly-icon"><i class="${d.icon}"></i></div>
+                <div class="hourly-temp"><span>${d.high}°</span> / <span>${d.low}°</span></div>
             </div>
         `).join('');
     }
@@ -249,9 +190,7 @@ class WeatherApp {
         document.getElementById('errorState').style.display = 'flex';
 
         const errorMessage = document.getElementById('errorMessage');
-        if (errorMessage) {
-            errorMessage.textContent = message;
-        }
+        if (errorMessage) errorMessage.textContent = message;
     }
 
     searchWeather(city) {
@@ -279,11 +218,7 @@ class WeatherApp {
 
     toggleUnit() {
         this.currentUnit = this.currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
-
-        const unitDisplay = document.querySelector('.unit-display');
-        if (unitDisplay) {
-            unitDisplay.textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
-        }
+        document.querySelector('.unit-display').textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
 
         const settings = this.storage.getSettings();
         settings.unit = this.currentUnit;
@@ -296,21 +231,10 @@ class WeatherApp {
 
     toggleTheme() {
         this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-        
-        // Remove both theme classes first
         document.body.classList.remove('dark-theme', 'light-theme');
-        
-        // Add the current theme class
-        if (this.currentTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.add('light-theme');
-        }
+        document.body.classList.add(this.currentTheme === 'dark' ? 'dark-theme' : 'light-theme');
 
-        const themeIcon = document.querySelector('#themeToggle i');
-        if (themeIcon) {
-            themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
+        document.querySelector('#themeToggle i').className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
         const settings = this.storage.getSettings();
         settings.theme = this.currentTheme;
@@ -326,15 +250,13 @@ class WeatherApp {
         const favoritesList = document.getElementById('favoritesList');
 
         if (favoritesList) {
-            if (favorites.length === 0) {
-                favoritesList.innerHTML = '<p class="no-favorites">No favorite cities yet. Search for a city and add it to favorites!</p>';
-            } else {
-                favoritesList.innerHTML = favorites.map(city => `
+            favoritesList.innerHTML = favorites.length === 0 
+                ? '<p class="no-favorites">No favorite cities yet. Search for a city and add it to favorites!</p>'
+                : favorites.map(city => `
                     <button class="favorite-city" onclick="weatherApp.searchWeather('${city.name}')">
                         ${city.name}
                     </button>
                 `).join('');
-            }
         }
     }
 
