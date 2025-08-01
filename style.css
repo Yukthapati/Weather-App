@@ -52,7 +52,7 @@
 }
 
 /* Dark Theme */
-[data-theme="dark"] {
+.dark-theme {
   --color-bg-primary: #0F172A;
   --color-bg-secondary: #1E293B;
   --color-bg-tertiary: #334155;

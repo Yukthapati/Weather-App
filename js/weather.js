@@ -23,8 +23,15 @@ class WeatherApp {
         this.currentUnit = settings.unit;
         this.currentTheme = settings.theme;
 
-        document.body.classList.toggle('dark-theme', this.currentTheme === 'dark');
-        document.body.classList.toggle('light-theme', this.currentTheme === 'light');
+        // Remove both theme classes first
+        document.body.classList.remove('dark-theme', 'light-theme');
+        
+        // Add the current theme class
+        if (this.currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.add('light-theme');
+        }
 
         const themeIcon = document.querySelector('#themeToggle i');
         if (themeIcon) {
@@ -289,8 +296,16 @@ class WeatherApp {
 
     toggleTheme() {
         this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-        document.body.classList.toggle('dark-theme', this.currentTheme === 'dark');
-        document.body.classList.toggle('light-theme', this.currentTheme === 'light');
+        
+        // Remove both theme classes first
+        document.body.classList.remove('dark-theme', 'light-theme');
+        
+        // Add the current theme class
+        if (this.currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.add('light-theme');
+        }
 
         const themeIcon = document.querySelector('#themeToggle i');
         if (themeIcon) {
