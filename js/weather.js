@@ -194,27 +194,39 @@ class WeatherApp {
     }
 
     searchWeather(city) {
-        console.log(`Searching weather for: ${city}`);
-        this.showLoading();
+    console.log(`Searching weather for: ${city}`);
+    this.showLoading();
 
-        setTimeout(() => {
-            const demoData = {
-                name: city,
-                country: 'IN',
-                temp: 25 + Math.random() * 10,
-                condition: 'Clear Sky',
-                feelsLike: 28 + Math.random() * 8,
-                humidity: 60 + Math.random() * 30,
-                windSpeed: 5 + Math.random() * 15,
-                pressure: 1010 + Math.random() * 20,
-                visibility: 8 + Math.random() * 4,
-                uvIndex: Math.floor(Math.random() * 11)
+    const url = `${this.BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${this.API_KEY}&units=metric`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('City not found or API error.');
+            return response.json();
+        })
+        .then(data => {
+            const weatherData = {
+                name: data.name,
+                country: data.sys.country,
+                temp: data.main.temp,
+                condition: data.weather[0].main,
+                feelsLike: data.main.feels_like,
+                humidity: data.main.humidity,
+                windSpeed: data.wind.speed * 3.6, // Convert m/s to km/h
+                pressure: data.main.pressure,
+                visibility: data.visibility / 1000, // Convert m to km
+                uvIndex: Math.floor(Math.random() * 11) // Placeholder, as UV requires OneCall API
             };
 
-            this.displayWeatherData(demoData);
+            this.displayWeatherData(weatherData);
             this.showWeeklyForecast();
-        }, 1000);
-    }
+        })
+        .catch(error => {
+            console.error(error);
+            this.showError(error.message || 'Unable to fetch weather data.');
+        });
+}
+
 
     toggleUnit() {
         this.currentUnit = this.currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
