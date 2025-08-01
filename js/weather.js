@@ -137,10 +137,10 @@ class WeatherApp {
 
     updateWeatherDetails(data) {
         const details = {
-            humidity: `${data.humidity}%`,
-            windSpeed: `${data.windSpeed} km/h`,
-            pressure: `${data.pressure} hPa`,
-            visibility: `${data.visibility} km`,
+            humidity: `${Math.round(data.humidity)}%`,
+            windSpeed: `${Math.round(data.windSpeed)} km/h`,
+            pressure: `${Math.round(data.pressure)} hPa`,
+            visibility: `${Math.round(data.visibility)} km`,
             uvIndex: data.uvIndex
         };
 

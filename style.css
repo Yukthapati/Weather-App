@@ -510,6 +510,8 @@ body {
   font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--color-text-primary);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .uv-index {
