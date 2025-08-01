@@ -1,4 +1,3 @@
-// Weather API and UI management for WeatherPro
 class WeatherApp {
     constructor() {
         this.API_KEY = '9fcdf94541c44282bbe101419250108';
@@ -8,6 +7,7 @@ class WeatherApp {
         this.currentUnit = 'celsius';
         this.currentTheme = 'light';
         this.lastSearchedCity = null;
+        this.forecastData = null;
 
         this.initializeApp();
     }
@@ -20,7 +20,7 @@ class WeatherApp {
     }
 
     loadSettings() {
-        const settings = this.storage.getSettings();
+        const settings = this.storage.getSettings() || {};
         this.currentUnit = settings.unit || 'celsius';
         this.currentTheme = settings.theme || 'light';
 
@@ -67,6 +67,7 @@ class WeatherApp {
         };
 
         this.displayWeatherData(demoData);
+        this.forecastData = null; // Clear forecast for demo
         this.showHourlyForecast();
         this.showWeeklyForecast();
         this.animations.updateWeatherBackground(demoData.condition);
@@ -115,64 +116,90 @@ class WeatherApp {
         }
     }
 
+    fetchForecast(city) {
+        const url = `${this.BASE_URL}/forecast.json?key=${this.API_KEY}&q=${encodeURIComponent(city)}&days=7&aqi=no&alerts=no`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error('Forecast data not available.');
+                return response.json();
+            })
+            .then(data => {
+                this.forecastData = data.forecast.forecastday;  // Store forecast for use
+                this.showHourlyForecast();
+                this.showWeeklyForecast();
+            })
+            .catch(error => {
+                console.error(error);
+                this.forecastData = null;
+                this.showHourlyForecast();
+                this.showWeeklyForecast();
+            });
+    }
+
     showHourlyForecast() {
         const hourlyScroll = document.getElementById('hourlyScroll');
         if (!hourlyScroll) return;
 
-        const now = new Date();
-        const hours = Array.from({ length: 24 }, (_, i) => {
-            const hour = new Date(now.getTime() + i * 3600000);
-            const temp = 28 + Math.sin(i * 0.3) * 5;
+        if (!this.forecastData || this.forecastData.length === 0) {
+            hourlyScroll.innerHTML = '<p>No hourly forecast data available.</p>';
+            return;
+        }
 
-            return {
-                time: hour.getHours() === 0 ? '12 AM' :
-                      hour.getHours() < 12 ? `${hour.getHours()} AM` :
-                      `${hour.getHours() - 12} PM`,
-                temp: Math.round(temp),
-                icon: 'fas fa-cloud-sun'
-            };
-        });
+        // Use today's forecast hours
+        const todayHours = this.forecastData[0].hour;
 
-        hourlyScroll.innerHTML = hours.map(h => `
-            <div class="hourly-card">
-                <div class="hourly-time">${h.time}</div>
-                <div class="hourly-icon"><i class="${h.icon}"></i></div>
-                <div class="hourly-temp">${h.temp}°</div>
-            </div>
-        `).join('');
+        const hoursHtml = todayHours.map(hour => {
+            const time = new Date(hour.time);
+            const hourLabel = time.getHours() === 0 ? '12 AM' :
+                              time.getHours() < 12 ? `${time.getHours()} AM` :
+                              `${time.getHours() - 12} PM`;
+
+            const temp = this.currentUnit === 'celsius' ? hour.temp_c : hour.temp_f;
+            const iconUrl = hour.condition.icon;
+            const iconClass = 'hourly-icon-img';
+
+            return `
+                <div class="hourly-card">
+                    <div class="hourly-time">${hourLabel}</div>
+                    <div class="hourly-icon"><img src="https:${iconUrl}" alt="${hour.condition.text}" class="${iconClass}"></div>
+                    <div class="hourly-temp">${Math.round(temp)}°</div>
+                </div>
+            `;
+        }).join('');
+
+        hourlyScroll.innerHTML = hoursHtml;
     }
 
     showWeeklyForecast() {
         const weeklyList = document.getElementById('weeklyList');
         if (!weeklyList) return;
 
-        const today = new Date();
-        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const conditions = ['Clear Sky', 'Partly Cloudy', 'Cloudy', 'Light Rain', 'Sunny'];
-        const icons = ['fas fa-sun', 'fas fa-cloud-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-sun'];
+        if (!this.forecastData || this.forecastData.length === 0) {
+            weeklyList.innerHTML = '<p>No weekly forecast data available.</p>';
+            return;
+        }
 
-        const days = Array.from({ length: 7 }, (_, i) => {
-            const date = new Date(today.getTime() + i * 86400000);
-            const conditionIndex = Math.floor(Math.random() * conditions.length);
-            const highTemp = 25 + Math.random() * 10;
-            const lowTemp = highTemp - 5 - Math.random() * 5;
+        const daysHtml = this.forecastData.map((day, i) => {
+            const date = new Date(day.date);
+            const dayLabel = i === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
+            const condition = day.day.condition.text;
+            const iconUrl = day.day.condition.icon;
+            const iconClass = 'weekly-icon-img';
 
-            return {
-                day: i === 0 ? 'Today' : weekdays[date.getDay()],
-                condition: conditions[conditionIndex],
-                icon: icons[conditionIndex],
-                high: Math.round(this.currentUnit === 'celsius' ? highTemp : (highTemp * 9/5) + 32),
-                low: Math.round(this.currentUnit === 'celsius' ? lowTemp : (lowTemp * 9/5) + 32)
-            };
-        });
+            const high = this.currentUnit === 'celsius' ? day.day.maxtemp_c : day.day.maxtemp_f;
+            const low = this.currentUnit === 'celsius' ? day.day.mintemp_c : day.day.mintemp_f;
 
-        weeklyList.innerHTML = days.map(d => `
-            <div class="hourly-card">
-                <div class="hourly-time">${d.day}</div>
-                <div class="hourly-icon"><i class="${d.icon}"></i></div>
-                <div class="hourly-temp"><span>${d.high}°</span> / <span>${d.low}°</span></div>
-            </div>
-        `).join('');
+            return `
+                <div class="hourly-card">
+                    <div class="hourly-time">${dayLabel}</div>
+                    <div class="hourly-icon"><img src="https:${iconUrl}" alt="${condition}" class="${iconClass}"></div>
+                    <div class="hourly-temp"><span>${Math.round(high)}°</span> / <span>${Math.round(low)}°</span></div>
+                </div>
+            `;
+        }).join('');
+
+        weeklyList.innerHTML = daysHtml;
     }
 
     showWeatherContent() {
@@ -200,7 +227,6 @@ class WeatherApp {
         console.log(`Searching weather for: ${city}`);
         this.showLoading();
 
-        // WeatherAPI current weather endpoint
         const url = `${this.BASE_URL}/current.json?key=${this.API_KEY}&q=${encodeURIComponent(city)}&aqi=no`;
 
         fetch(url)
@@ -209,7 +235,6 @@ class WeatherApp {
                 return response.json();
             })
             .then(data => {
-                // Save last searched city for retry
                 this.lastSearchedCity = city;
 
                 const weatherData = {
@@ -226,7 +251,7 @@ class WeatherApp {
                 };
 
                 this.displayWeatherData(weatherData);
-                this.showWeeklyForecast();
+                this.fetchForecast(city);
             })
             .catch(error => {
                 console.error(error);
@@ -238,12 +263,11 @@ class WeatherApp {
         this.currentUnit = this.currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
         document.querySelector('.unit-display').textContent = this.currentUnit === 'celsius' ? '°C' : '°F';
 
-        const settings = this.storage.getSettings();
+        const settings = this.storage.getSettings() || {};
         settings.unit = this.currentUnit;
         this.storage.saveSettings(settings);
 
         if (document.getElementById('weatherContent').style.display !== 'none') {
-            // If weather content is showing, refresh display with current data or demo data
             if (this.lastSearchedCity) {
                 this.searchWeather(this.lastSearchedCity);
             } else {
@@ -260,22 +284,20 @@ class WeatherApp {
         const themeIcon = document.querySelector('#themeToggle i');
         if (themeIcon) themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
-        const settings = this.storage.getSettings();
+        const settings = this.storage.getSettings() || {};
         settings.theme = this.currentTheme;
         this.storage.saveSettings(settings);
     }
 
     toggleFavorite() {
         const cityName = document.getElementById('cityName').textContent.split(',')[0];
-        const favorites = this.storage.getFavorites();
+        const favorites = this.storage.getFavorites() || [];
 
         const existsIndex = favorites.findIndex(city => city.name === cityName);
         if (existsIndex > -1) {
-            // Remove from favorites
             favorites.splice(existsIndex, 1);
             alert(`${cityName} removed from favorites.`);
         } else {
-            // Add to favorites
             favorites.push({ name: cityName });
             alert(`${cityName} added to favorites.`);
         }
@@ -285,7 +307,7 @@ class WeatherApp {
     }
 
     loadFavorites() {
-        const favorites = this.storage.getFavorites();
+        const favorites = this.storage.getFavorites() || [];
         const favoritesList = document.getElementById('favoritesList');
 
         if (favoritesList) {
