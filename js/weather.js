@@ -7,11 +7,11 @@ class WeatherApp {
         this.animations = new AnimationManager();
         this.currentUnit = 'celsius';
         this.currentTheme = 'light';
+        this.lastSearchedCity = null;
 
         this.initializeApp();
     }
     
-
     initializeApp() {
         this.loadSettings();
         this.setupEventListeners();
@@ -21,8 +21,8 @@ class WeatherApp {
 
     loadSettings() {
         const settings = this.storage.getSettings();
-        this.currentUnit = settings.unit;
-        this.currentTheme = settings.theme;
+        this.currentUnit = settings.unit || 'celsius';
+        this.currentTheme = settings.theme || 'light';
 
         document.body.classList.remove('dark-theme', 'light-theme');
         document.body.classList.add(this.currentTheme === 'dark' ? 'dark-theme' : 'light-theme');
@@ -106,6 +106,8 @@ class WeatherApp {
         const uv = document.getElementById('uvIndex');
         if (uv) {
             uv.className = 'detail-value uv-index';
+            uv.classList.remove('uv-low', 'uv-moderate', 'uv-high', 'uv-very-high');
+
             if (data.uvIndex <= 2) uv.classList.add('uv-low');
             else if (data.uvIndex <= 5) uv.classList.add('uv-moderate');
             else if (data.uvIndex <= 7) uv.classList.add('uv-high');
@@ -124,7 +126,7 @@ class WeatherApp {
 
             return {
                 time: hour.getHours() === 0 ? '12 AM' :
-                      hour.getHours() <= 12 ? `${hour.getHours()} AM` :
+                      hour.getHours() < 12 ? `${hour.getHours()} AM` :
                       `${hour.getHours() - 12} PM`,
                 temp: Math.round(temp),
                 icon: 'fas fa-cloud-sun'
@@ -195,39 +197,42 @@ class WeatherApp {
     }
 
     searchWeather(city) {
-    console.log(`Searching weather for: ${city}`);
-    this.showLoading();
+        console.log(`Searching weather for: ${city}`);
+        this.showLoading();
 
-    const url = `${this.BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${this.API_KEY}&units=metric`;
+        // WeatherAPI current weather endpoint
+        const url = `${this.BASE_URL}/current.json?key=${this.API_KEY}&q=${encodeURIComponent(city)}&aqi=no`;
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error('City not found or API error.');
-            return response.json();
-        })
-        .then(data => {
-            const weatherData = {
-                name: data.name,
-                country: data.sys.country,
-                temp: data.main.temp,
-                condition: data.weather[0].main,
-                feelsLike: data.main.feels_like,
-                humidity: data.main.humidity,
-                windSpeed: data.wind.speed * 3.6, // Convert m/s to km/h
-                pressure: data.main.pressure,
-                visibility: data.visibility / 1000, // Convert m to km
-                uvIndex: Math.floor(Math.random() * 11) // Placeholder, as UV requires OneCall API
-            };
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error('City not found or API error.');
+                return response.json();
+            })
+            .then(data => {
+                // Save last searched city for retry
+                this.lastSearchedCity = city;
 
-            this.displayWeatherData(weatherData);
-            this.showWeeklyForecast();
-        })
-        .catch(error => {
-            console.error(error);
-            this.showError(error.message || 'Unable to fetch weather data.');
-        });
-}
+                const weatherData = {
+                    name: data.location.name,
+                    country: data.location.country,
+                    temp: data.current.temp_c,
+                    condition: data.current.condition.text,
+                    feelsLike: data.current.feelslike_c,
+                    humidity: data.current.humidity,
+                    windSpeed: data.current.wind_kph,
+                    pressure: data.current.pressure_mb,
+                    visibility: data.current.vis_km,
+                    uvIndex: data.current.uv
+                };
 
+                this.displayWeatherData(weatherData);
+                this.showWeeklyForecast();
+            })
+            .catch(error => {
+                console.error(error);
+                this.showError(error.message || 'Unable to fetch weather data.');
+            });
+    }
 
     toggleUnit() {
         this.currentUnit = this.currentUnit === 'celsius' ? 'fahrenheit' : 'celsius';
@@ -238,7 +243,12 @@ class WeatherApp {
         this.storage.saveSettings(settings);
 
         if (document.getElementById('weatherContent').style.display !== 'none') {
-            this.showDemoData();
+            // If weather content is showing, refresh display with current data or demo data
+            if (this.lastSearchedCity) {
+                this.searchWeather(this.lastSearchedCity);
+            } else {
+                this.showDemoData();
+            }
         }
     }
 
@@ -247,7 +257,8 @@ class WeatherApp {
         document.body.classList.remove('dark-theme', 'light-theme');
         document.body.classList.add(this.currentTheme === 'dark' ? 'dark-theme' : 'light-theme');
 
-        document.querySelector('#themeToggle i').className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        const themeIcon = document.querySelector('#themeToggle i');
+        if (themeIcon) themeIcon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
         const settings = this.storage.getSettings();
         settings.theme = this.currentTheme;
@@ -255,7 +266,22 @@ class WeatherApp {
     }
 
     toggleFavorite() {
-        console.log('Toggle favorite clicked');
+        const cityName = document.getElementById('cityName').textContent.split(',')[0];
+        const favorites = this.storage.getFavorites();
+
+        const existsIndex = favorites.findIndex(city => city.name === cityName);
+        if (existsIndex > -1) {
+            // Remove from favorites
+            favorites.splice(existsIndex, 1);
+            alert(`${cityName} removed from favorites.`);
+        } else {
+            // Add to favorites
+            favorites.push({ name: cityName });
+            alert(`${cityName} added to favorites.`);
+        }
+
+        this.storage.saveFavorites(favorites);
+        this.loadFavorites();
     }
 
     loadFavorites() {
@@ -274,7 +300,11 @@ class WeatherApp {
     }
 
     retryLastSearch() {
-        this.showDemoData();
+        if (this.lastSearchedCity) {
+            this.searchWeather(this.lastSearchedCity);
+        } else {
+            this.showDemoData();
+        }
     }
 }
 
