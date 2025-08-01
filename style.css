@@ -126,7 +126,6 @@ body {
 .background-animation.weather-bg-clear {
   background: linear-gradient(135deg, #87CEEB 0%, #FFE4B5 100%);
   opacity: 0.2;
-}
 /* Header */
 .header {
   background: var(--color-bg-primary);
