@@ -1,8 +1,8 @@
 // Weather API and UI management for WeatherPro
 class WeatherApp {
     constructor() {
-        this.API_KEY = 'demo';
-        this.BASE_URL = 'https://api.openweathermap.org/data/2.5';
+        this.API_KEY = '9fcdf94541c44282bbe101419250108';
+        this.BASE_URL = 'https://api.weatherapi.com/v1';
         this.storage = new StorageManager();
         this.animations = new AnimationManager();
         this.currentUnit = 'celsius';
@@ -10,6 +10,30 @@ class WeatherApp {
 
         this.initializeApp();
     }
+    async function fetchWeatherByCity(city) {
+    try {
+        const response = await fetch(`${BASE_URL}/current.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}`);
+        if (!response.ok) throw new Error('Failed to fetch weather');
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Error:', err);
+        throw err;
+    }
+}
+
+async function fetchForecast(city) {
+    try {
+        const response = await fetch(`${BASE_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}&days=7`);
+        if (!response.ok) throw new Error('Failed to fetch forecast');
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Forecast Error:', err);
+        throw err;
+    }
+}
+
 
     initializeApp() {
         this.loadSettings();
