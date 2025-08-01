@@ -1,7 +1,5 @@
 # WeatherApp - Weather Forecast Application
 
-![WeatherApp Logo](https://yukthapati.github.io/Weather-App/assets/logo.png) <!-- Replace with your logo URL if you have -->
-
 ## Overview
 
 WeatherPro is a modern, responsive weather forecasting web application that provides accurate current weather, hourly, and weekly forecasts for any city worldwide.  
