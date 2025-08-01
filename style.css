@@ -95,8 +95,38 @@ body {
   z-index: -1;
   pointer-events: none;
   transition: opacity var(--transition-slow);
+  background-image: url('/public/Sky video.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
 }
 
+/* Weather background overlays */
+.background-animation.weather-bg-sunny {
+  background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 100%);
+  opacity: 0.2;
+}
+
+.background-animation.weather-bg-cloudy {
+  background: linear-gradient(135deg, #B0C4DE 0%, #D3D3D3 100%);
+  opacity: 0.3;
+}
+
+.background-animation.weather-bg-rainy {
+  background: linear-gradient(135deg, #4682B4 0%, #708090 100%);
+  opacity: 0.4;
+}
+
+.background-animation.weather-bg-snowy {
+  background: linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 100%);
+  opacity: 0.3;
+}
+
+.background-animation.weather-bg-clear {
+  background: linear-gradient(135deg, #87CEEB 0%, #FFE4B5 100%);
+  opacity: 0.2;
+}
 /* Header */
 .header {
   background: var(--color-bg-primary);
